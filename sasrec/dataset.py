@@ -4,7 +4,7 @@ Strategy Sequence Dataset for SASREC training.
 
 Extracts strategy sequences from ESConv dialogues for next-strategy prediction.
 
-Token indexing (following ESCMamba):
+Token indexing:
 - 0: [PAD]
 - 1: [no_history]
 - 2~9: Strategies
@@ -116,7 +116,7 @@ def extract_turn_level_samples(data_file: str) -> List[Dict]:
                         if i > 0:
                             samples.append({
                                 'history': strategy_history.copy(),
-                                'target': strategy_id,  # Keep as 2~9 (following ESCMamba)
+                                'target': strategy_id,  # Keep as 2~9
                                 'dialog_idx': dialog_idx,
                                 'turn_idx': turn_idx,
                             })
@@ -133,7 +133,6 @@ class StrategySequenceDataset(Dataset):
     """
     Dataset for SASREC training on strategy sequences.
 
-    Following ESCMamba's approach:
     - One sample per dialogue (full sequence)
     - Input: [no_history] + strategies[:-1]
     - Target: strategies (IDs 2~9, same as input vocab)
@@ -163,7 +162,7 @@ class StrategySequenceDataset(Dataset):
 
     def _generate_samples(self) -> List[Tuple[List[int], List[int]]]:
         """
-        Generate training samples following ESCMamba's approach.
+        Generate training samples.
 
         For each dialogue with strategies [s1, s2, s3, s4]:
         - Input: [no_history, s1, s2, s3]
@@ -176,7 +175,7 @@ class StrategySequenceDataset(Dataset):
                 continue
 
             # Input: [no_history] + all strategies except last
-            # Target: all strategies (keep IDs as 2~9, following ESCMamba)
+            # Target: all strategies (keep IDs as 2~9)
             input_seq = [NO_HISTORY_TOKEN_ID] + seq[:-1]
             target_seq = seq  # targets are strategy IDs (2~9) - NO offset!
 
@@ -195,12 +194,12 @@ class StrategySequenceDataset(Dataset):
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
         input_seq, target_seq = self.samples[idx]
 
-        # Pad to max_len (ESCMamba style - FIXED padding)
+        # Pad to max_len (fixed padding)
         pad_len = self.max_len - len(input_seq)
         input_ids = input_seq + [0] * pad_len
         target_ids = target_seq + [0] * pad_len
 
-        # Attention mask (ESCMamba style)
+        # Attention mask
         attention_mask = [1 if x != 0 else 0 for x in input_ids]
 
         return {
@@ -215,7 +214,7 @@ class TurnLevelDataset(Dataset):
     Dataset for turn-level evaluation, aligned with BlenderBot's output.
 
     Each sample is one sys turn with its strategy history.
-    Following ESCMamba: prepend [no_history] to the input sequence.
+    Note: prepend [no_history] to the input sequence.
     """
 
     def __init__(
@@ -235,7 +234,7 @@ class TurnLevelDataset(Dataset):
         history = sample['history']  # list of strategy IDs (2~9)
         target = sample['target']  # strategy ID (2~9)
 
-        # Prepend [no_history] token (following ESCMamba)
+        # Prepend [no_history] token
         input_seq = [NO_HISTORY_TOKEN_ID] + history
 
         # Truncate to max_len (keep recent)
@@ -245,11 +244,11 @@ class TurnLevelDataset(Dataset):
         # Store actual length before padding (needed for correct prediction)
         actual_len = len(input_seq)
 
-        # Pad to max_len (ESCMamba style - FIXED padding)
+        # Pad to max_len (fixed padding)
         pad_len = self.max_len - len(input_seq)
         input_ids = input_seq + [0] * pad_len
 
-        # Attention mask (ESCMamba style)
+        # Attention mask
         attention_mask = [1 if x != 0 else 0 for x in input_ids]
 
         return {
@@ -265,7 +264,7 @@ class TurnLevelDataset(Dataset):
 def collate_fn(batch: List[Dict]) -> Dict[str, torch.Tensor]:
     """
     Collate function for StrategySequenceDataset.
-    Since __getitem__ now returns fixed-length padded tensors (ESCMamba style),
+    Since __getitem__ now returns fixed-length padded tensors,
     we just stack them.
     """
     return {
@@ -278,7 +277,7 @@ def collate_fn(batch: List[Dict]) -> Dict[str, torch.Tensor]:
 def collate_fn_turn_level(batch: List[Dict]) -> Dict:
     """
     Collate function for TurnLevelDataset.
-    Since __getitem__ now returns fixed-length padded tensors (ESCMamba style),
+    Since __getitem__ now returns fixed-length padded tensors,
     we just stack them.
     """
     return {

@@ -4,14 +4,13 @@ SASREC: Self-Attentive Sequential Recommendation
 Based on Kang & McAuley, ICDM 2018
 
 Implementation for strategy sequence prediction in ESConv.
-Following ESCMamba's implementation style.
 
 Token indexing:
 - 0: [PAD]
 - 1: [no_history]
 - 2~9: Strategies
 
-Output: 10 classes (same as input vocab, following ESCMamba)
+Output: 10 classes (same as input vocab)
 Labels: 2~9 (strategies), ignore_index=0 (PAD)
 """
 
@@ -24,7 +23,7 @@ class SASREC(nn.Module):
     """
     SASREC: Self-Attentive Sequential Recommendation
 
-    Following ESCMamba's implementation using PyTorch TransformerEncoder.
+    Implementation uses PyTorch TransformerEncoder.
 
     For strategy sequence prediction:
     - Input: [no_history] + strategy sequence (IDs 0~9)
@@ -49,15 +48,15 @@ class SASREC(nn.Module):
         self.num_blocks = num_blocks
         self.num_heads = num_heads
         self.max_len = max_len
-        # Following ESCMamba: output_num_items = num_items (10)
+        # Note: output_num_items = num_items (10)
         self.output_num_items = output_num_items if output_num_items is not None else num_items
 
-        # Embedding layers (following ESCMamba)
+        # Embedding layers
         self.item_emb = nn.Embedding(num_items, hidden_size, padding_idx=0)
         self.pos_emb = nn.Embedding(max_len, hidden_size)
         self.emb_dropout = nn.Dropout(dropout_rate)
 
-        # Transformer encoder (following ESCMamba)
+        # Transformer encoder
         encoder_layer = nn.TransformerEncoderLayer(
             d_model=hidden_size,
             nhead=num_heads,
@@ -67,13 +66,13 @@ class SASREC(nn.Module):
         )
         self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=num_blocks)
 
-        # Final prediction layer (following ESCMamba)
+        # Final prediction layer
         self.final_layer = nn.Linear(hidden_size, self.output_num_items)
 
         self._init_weights()
 
     def _init_weights(self):
-        """Initialize weights following ESCMamba."""
+        """Initialize weights."""
         for module in self.modules():
             if isinstance(module, (nn.Linear, nn.Embedding)):
                 module.weight.data.normal_(mean=0.0, std=0.02)
@@ -107,7 +106,7 @@ class SASREC(nn.Module):
         emb = self.item_emb(input_ids)  # [batch, seq, hidden]
         pos_emb = self.pos_emb(positions)  # [batch, seq, hidden]
 
-        # Sum embeddings (following SASRec paper and ESCMamba)
+        # Sum embeddings (following SASRec paper)
         x = emb + pos_emb
         x = self.emb_dropout(x)
 
@@ -145,7 +144,7 @@ class SASREC(nn.Module):
         """
         Predict next strategy given input sequence.
 
-        Following ESCMamba: use the actual last position (not padded position).
+        Note: use the actual last position (not padded position).
 
         Args:
             input_ids: (batch_size, seq_len) strategy sequence
@@ -160,7 +159,7 @@ class SASREC(nn.Module):
         logits = self.forward(input_ids, attention_mask)  # [batch, seq, output_num_items]
 
         if actual_lens is not None:
-            # Use actual last position for each sample (ESCMamba style)
+            # Use actual last position for each sample
             batch_size = logits.size(0)
             # Gather logits at actual_len - 1 for each sample
             last_indices = (actual_lens - 1).unsqueeze(-1).unsqueeze(-1)  # [batch, 1, 1]
@@ -183,7 +182,7 @@ class SASREC(nn.Module):
         """
         Compute cross-entropy loss for next-item prediction.
 
-        Following ESCMamba: ignore_index=0 (PAD token)
+        Note: ignore_index=0 (PAD token)
 
         Args:
             input_ids: (batch_size, seq_len) input strategy sequence
@@ -200,7 +199,7 @@ class SASREC(nn.Module):
         logits_flat = logits.view(-1, num_classes)  # [batch * seq, num_classes]
         targets_flat = target_ids.view(-1)  # [batch * seq]
 
-        # Compute loss (ignore_index=0 for PAD, following ESCMamba)
+        # Compute loss (ignore_index=0 for PAD)
         loss = F.cross_entropy(logits_flat, targets_flat, ignore_index=0)
 
         # Compute accuracy (only on valid positions, i.e., targets != 0)

@@ -1,0 +1,33 @@
+{
+  "model_name": "strat_blenderbot_small_lora_strat_s3",
+  "pretrained_model_path": "../Blenderbot_small-90M",
+  "custom_config_path": null,
+  "gradient_checkpointing": false,
+
+  "joint_probe": true,
+  "joint_probe_source": "encoder",
+
+  "lora_num_experts": 8,
+  "lora_rank": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.05,
+  "lora_base_trainable": true,
+  "lora_use_encoder_shared": false,
+  "lora_expert_select_by": "full",
+  "lora_strategy_mode": "control_no_lora",
+  "lora_strategy_block_base_grad": true,
+  "lora_strategy_pred_use_lora": false,
+  "lora_use_strategy_token_prefix": false,
+  "lora_disable_strategy_loss": true,
+
+  "expanded_vocab": [
+    "[Question]",
+    "[Restatement or Paraphrasing]",
+    "[Reflection of feelings]",
+    "[Self-disclosure]",
+    "[Affirmation and Reassurance]",
+    "[Providing Suggestions]",
+    "[Information]",
+    "[Others]"
+  ]
+}
