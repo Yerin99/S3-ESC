@@ -1,7 +1,7 @@
 # coding=utf-8
 """
 SASREC: Self-Attentive Sequential Recommendation
-Based on Kang & McAuley, ICDM 2s3
+Based on Kang & McAuley, ICDM 2018
 
 Implementation for strategy sequence prediction in ESConv.
 Following ESCMamba's implementation style.
