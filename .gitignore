@@ -6,7 +6,7 @@ _reformat/sample.json
 DATA/*
 !DATA/README.md
 
-Blenderbot_small-90M/
+Blenderbot_small-90M/pytorch_model.bin
 DialoGPT-small/
 
 logs/
