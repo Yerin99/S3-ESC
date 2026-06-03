@@ -26,7 +26,7 @@ TRAIN_FILE=../_reformat/701515/train.txt
 VALID_FILE=../_reformat/701515/valid.txt
 TEST_FILE=../_reformat/701515/test.txt
 
-SASREC_SRC_DIR=${SASREC_SRC_DIR:?Set SASREC_SRC_DIR to a directory containing SASREC valid_probs.json / test_probs.json}
+SASREC_SRC_DIR=${SASREC_SRC_DIR:-../data/sasrec}
 SASREC_MODEL=./DATA/sasrec/best_model.pt
 SASREC_VALID_PROBS=./DATA/sasrec/valid_probs.json
 SASREC_TEST_PROBS=./DATA/sasrec/test_probs.json

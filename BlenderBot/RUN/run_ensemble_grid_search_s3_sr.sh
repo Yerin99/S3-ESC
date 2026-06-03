@@ -24,7 +24,7 @@ CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer.py \
 # PROBE_GEN_JSON: path to the gen.json from the valid set inference above
 # SASREC_PROBS: path to SASREC valid probabilities
 PROBE_GEN_JSON=${PROBE_GEN_JSON:?"Set PROBE_GEN_JSON to the valid gen.json path"}
-SASREC_PROBS=${SASREC_PROBS:?"Set SASREC_PROBS to SASREC valid probs JSON path"}
+SASREC_PROBS=${SASREC_PROBS:-../data/sasrec/test_probs.json}
 OUTPUT_FILE=${OUTPUT_FILE:-"./DATA/ensemble_s3/grid_search_s3_sr.json"}
 
 python -m ensemble.grid_search_s3 \

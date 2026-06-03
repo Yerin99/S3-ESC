@@ -1,5 +1,5 @@
 CHECKPOINT=${CHECKPOINT:?"Set CHECKPOINT to a trained checkpoint path"}
-SASREC_PROBS=${SASREC_PROBS:?"Set SASREC_PROBS to SASREC test probs JSON path"}
+SASREC_PROBS=${SASREC_PROBS:-../data/sasrec/test_probs.json}
 ENSEMBLE_ALPHA=${ENSEMBLE_ALPHA:-0.5}
 
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer_ensemble_s3.py \

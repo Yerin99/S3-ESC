@@ -37,8 +37,8 @@ DKFPE uses an 8:1:1 utterance-pair split derived from TransESC + PESConv mapping
 
 ```bash
 cd _reformat
-python process_dkfpe.py --mode 701515   # DKFPE paper main (70:15:15 split)
-# python process_dkfpe.py --mode 811    # alternative 8:1:1 split
+python process_dkfpe.py --mode 701515   # 70:15:15 split — used by all baselines for fair comparison
+# python process_dkfpe.py --mode 811    # DKFPE paper original split (8:1:1)
 ```
 
 ## Training
