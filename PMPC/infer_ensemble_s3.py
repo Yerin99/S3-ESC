@@ -269,7 +269,7 @@ def main():
         infer_input_file_name = infer_input_file.split('/')[-1].replace('.txt', '')
 
         save_dir = (
-            f'{checkpoint_dir_path}/res_ensemble018_soft_{checkpoint_name}_{infer_input_file_name}'
+            f'{checkpoint_dir_path}/res_ensemble_s3_soft_{checkpoint_name}_{infer_input_file_name}'
             f'_a.{alpha}_k.{args.top_k}_p.{args.top_p}_t.{args.temperature}'
             f'_rp.{args.repetition_penalty}'
         )
