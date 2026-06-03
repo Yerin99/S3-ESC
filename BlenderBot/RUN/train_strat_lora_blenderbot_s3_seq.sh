@@ -1,6 +1,6 @@
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python train.py \
-    --config_name strat_lora_blenderbot_s3_sr \
-    --inputter_name strat_lora \
+    --config_name strat_lora_blenderbot_s3_seq \
+    --inputter_name strat_lora_seq \
     --eval_input_file ../_reformat/valid.txt \
     --seed 13 \
     --max_input_length 160 \
@@ -17,6 +17,6 @@ CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python train.py \
     --use_scheduled_sampling true \
     --ss_schedule_type step \
     --ss_warmup_epochs 1 \
-    --ss_p_sample 0.3 \
+    --ss_p_sample 0.05 \
     --ss_p_random 0.0 \
     --probe_lr 1e-2

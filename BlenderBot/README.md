@@ -22,7 +22,7 @@ bash RUN/prepare_strat_lora_blenderbot_s3_seq.sh
 The main S3 model (Joint Probe + Strategy Sequence + LoRA):
 
 ```bash
-bash RUN/train_strat_lora_blenderbot_s3_seq_p01.sh
+bash RUN/train_strat_lora_blenderbot_s3_seq.sh
 ```
 
 Training creates a timestamped folder under `DATA/{inputter}.{config}/`. Select the best checkpoint based on validation PPL.
@@ -41,7 +41,7 @@ Encoder/decoder probe variants are available via `_enc` / `_dec` config suffixes
 
 ```bash
 CHECKPOINT=DATA/{inputter}.{config}/{timestamp}/epoch-{n}.bin \
-  bash RUN/infer_strat_lora_blenderbot_s3_seq_p01.sh
+  bash RUN/infer_strat_lora_blenderbot_s3_seq.sh
 ```
 
 Metrics (BLEU, ROUGE-L, strategy accuracy, PPL, etc.) are computed automatically and printed at the end of inference.

@@ -1,6 +1,7 @@
+# Ablation: scheduled sampling off (otherwise identical to S3 main)
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python train.py \
-    --config_name strat_lora_blenderbot_b2 \
-    --inputter_name strat_lora \
+    --config_name strat_lora_blenderbot_s3_seq \
+    --inputter_name strat_lora_seq \
     --eval_input_file ../_reformat/valid.txt \
     --seed 13 \
     --max_input_length 160 \
@@ -13,4 +14,6 @@ CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python train.py \
     --warmup_steps 100 \
     --fp16 false \
     --loss_scale 0.0 \
-    --pbar true
+    --pbar true \
+    --use_scheduled_sampling false \
+    --probe_lr 1e-2
