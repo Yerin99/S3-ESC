@@ -35,8 +35,6 @@ Training creates a timestamped folder under `DATA/{inputter}.{config}/`. Select 
 | S3 (sr) | `strat_lora_blenderbot_s3_sr` | Joint probe + LoRA (no strategy sequence) |
 | S3 (-LoRA) | `strat_blenderbot_s3_nolora_enc` | Joint probe + strategy sequence (no LoRA) |
 
-Encoder/decoder probe variants are available via `_enc` / `_dec` config suffixes.
-
 ## Inference & Evaluation
 
 ```bash
