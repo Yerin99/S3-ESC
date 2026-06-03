@@ -106,7 +106,7 @@ def prep_param_lists(model, flat_master=False):
         Currently, if ``flat_master=True``, all the model's parameters must be the same type.  If the model has parameters of different types, use ``flat_master=False``, or use :class:`FP16_Optimizer`.
 
     .. _`Training Neural Networks with Mixed Precision:  Real Examples`:
-        http://on-demand.gputechconf.com/gtc/2s3/video/S81012/
+        http://on-demand.gputechconf.com/gtc/2018/video/S81012/
     """
     model_params = [param for param in model.parameters() if param.requires_grad]
 
