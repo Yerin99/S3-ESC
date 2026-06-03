@@ -1,0 +1,17 @@
+#!/bin/bash
+
+CUDA_VISIBLE_DEVICES=0 python train.py \
+    --config_name dkfpe \
+    --inputter_name dkfpe \
+    --seed 42 \
+    --max_input_length 512 \
+    --max_decoder_input_length 50 \
+    --train_batch_size 16 \
+    --gradient_accumulation_steps 1 \
+    --eval_batch_size 16 \
+    --learning_rate 1.5e-5 \
+    --num_epochs 10 \
+    --warmup_steps 100 \
+    --fp16 false \
+    --eval_input_file ../_reformat/valid.txt \
+    --pbar true

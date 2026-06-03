@@ -11,7 +11,7 @@ This codebase builds on the [ESConv](https://github.com/thu-coai/Emotional-Suppo
 | BlenderBot-small + S3-ESC | [`BlenderBot/`](BlenderBot/README.md) | Available |
 | KEMI + S3-ESC | `KEMI/` | Coming soon |
 | PMPC + S3-ESC | [`PMPC/`](PMPC/README.md) | Available |
-| DKFPE + S3-ESC | `DKFPE/` | Coming soon |
+| DKFPE + S3-ESC | [`DKFPE/`](DKFPE/README.md) | Available |
 | GLHG + S3-ESC | `GLHG/` | Coming soon |
 | MISC + S3-ESC | `MISC/` | Coming soon |
 

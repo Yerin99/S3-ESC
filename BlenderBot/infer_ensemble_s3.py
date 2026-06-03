@@ -2,7 +2,6 @@
 """
 exp/s3 B condition: Ensemble Inference with Joint Probe + SASREC.
 
-Unlike 008's infer_ensemble.py which uses BB strategy logits,
 this uses the _joint_probe_head's softmax distribution as the BB side.
 
 Pipeline:
