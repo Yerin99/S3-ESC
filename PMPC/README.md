@@ -8,7 +8,7 @@ S3-ESC method applied on the PMPC baseline (BlenderBot-small variant; DialoGPT v
 
 ```bash
 conda env create -f env.yml
-conda activate <env-name-from-env.yml>
+conda activate cuda
 ```
 
 ## External Models
