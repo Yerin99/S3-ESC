@@ -1,0 +1,75 @@
+{
+  "model_name": "kemi_blenderbot_small",
+  "pretrained_model_path": "../Blenderbot_small-90M",
+  "custom_config_path": null,
+  "gradient_checkpointing": false,
+
+  "expanded_vocab": {
+    "esconv": [
+      "[Question]",
+      "[Restatement or Paraphrasing]",
+      "[Reflection of feelings]",
+      "[Self-disclosure]",
+      "[Affirmation and Reassurance]",
+      "[Providing Suggestions]",
+      "[Information]",
+      "[Others]"
+    ],
+    "mi": [
+      "[GIV]",
+      "[QUEST]",
+      "[SEEK]",
+      "[AF]",
+      "[PWP]",
+      "[PWOP]",
+      "[EMPH]",
+      "[CON]",
+      "[SR]",
+      "[CR]"
+    ],
+    "basic": [
+      "[xReact]",
+      "[xIntent]",
+      "[xWant]",
+      "[xEffect]",
+      "[xNeed]"
+    ],
+    "heal":[
+      "[exp]",
+      "[resp]",
+      "[str]",
+      "[aff]"
+    ],
+    "bm25":[
+      "[knowledge]"
+    ],
+    "oracle":[
+      "[xReact]",
+      "[xIntent]",
+      "[xWant]",
+      "[xEffect]",
+      "[xNeed]",
+      "[knowledge]"
+    ],
+    "sbert":[
+      "[xReact]",
+      "[xIntent]",
+      "[xWant]",
+      "[xEffect]",
+      "[xNeed]",
+      "[resp]",
+      "[str]",
+      "[aff]"
+    ],
+    "graph":[
+      "[xReact]",
+      "[xIntent]",
+      "[xWant]",
+      "[xEffect]",
+      "[xNeed]",
+      "[resp]",
+      "[str]",
+      "[aff]"
+    ]
+  }
+}
