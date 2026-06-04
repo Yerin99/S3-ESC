@@ -6,16 +6,16 @@ This codebase builds on the [ESConv](https://github.com/thu-coai/Emotional-Suppo
 
 ## Baselines
 
-| Baseline | Folder | Status |
-|----------|--------|--------|
-| BlenderBot-small + S3-ESC | [`BlenderBot/`](BlenderBot/README.md) | Available |
-| KEMI + S3-ESC | [`KEMI/`](KEMI/README.md) | Available |
-| PMPC + S3-ESC | [`PMPC/`](PMPC/README.md) | Available |
-| DKFPE + S3-ESC | [`DKFPE/`](DKFPE/README.md) | Available |
-| GLHG + S3-ESC | [`GLHG/`](GLHG/README.md) | Available |
-| MISC + S3-ESC | [`MISC/`](MISC/README.md) | Available |
+| Baseline | Folder | Conda env | Status |
+|----------|--------|-----------|--------|
+| BlenderBot-small + S3-ESC | [`BlenderBot/`](BlenderBot/README.md) | `env-esc2021.yml` | Available |
+| KEMI + S3-ESC | [`KEMI/`](KEMI/README.md) | `env-esc2021.yml` | Available |
+| PMPC + S3-ESC | [`PMPC/`](PMPC/README.md) | `env-cuda.yml` | Available |
+| DKFPE + S3-ESC | [`DKFPE/`](DKFPE/README.md) | `env-cuda.yml` | Available |
+| GLHG + S3-ESC | [`GLHG/`](GLHG/README.md) | `env-esc2021.yml` | Available |
+| MISC + S3-ESC | [`MISC/`](MISC/README.md) | `env-esc2021.yml` | Available |
 
-See each baseline's README for env setup, training, and inference. To run, `cd <baseline>/` first; entrypoints assume the baseline folder is the current working directory.
+Two top-level conda envs: **`env-esc2021.yml`** (BlenderBot / KEMI / GLHG / MISC) and **`env-cuda.yml`** (PMPC / DKFPE). See each baseline's README for env setup, training, and inference. To run, `cd <baseline>/` first; entrypoints assume the baseline folder is the current working directory.
 
 ## Shared Assets (one-time setup)
 
