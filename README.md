@@ -12,7 +12,7 @@ This codebase builds on the [ESConv](https://github.com/thu-coai/Emotional-Suppo
 | KEMI + S3-ESC | [`KEMI/`](KEMI/README.md) | Available |
 | PMPC + S3-ESC | [`PMPC/`](PMPC/README.md) | Available |
 | DKFPE + S3-ESC | [`DKFPE/`](DKFPE/README.md) | Available |
-| GLHG + S3-ESC | `GLHG/` | Coming soon |
+| GLHG + S3-ESC | [`GLHG/`](GLHG/README.md) | Available |
 | MISC + S3-ESC | `MISC/` | Coming soon |
 
 See each baseline's README for env setup, training, and inference. To run, `cd <baseline>/` first; entrypoints assume the baseline folder is the current working directory.
@@ -50,6 +50,7 @@ ARR/
 ├── PMPC/                    # PMPC + S3-ESC
 ├── DKFPE/                   # DKFPE + S3-ESC
 ├── KEMI/                    # KEMI + S3-ESC
-├── GLHG/  MISC/             # placeholders for upcoming baselines
+├── GLHG/                    # GLHG + S3-ESC
+├── MISC/                    # placeholder for upcoming baseline
 └── README.md                # (this file)
 ```
