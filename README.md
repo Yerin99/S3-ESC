@@ -41,10 +41,14 @@ cd _reformat && python process.py && cd ..
 ```
 ARR/
 ├── _reformat/               # raw ESConv data + preprocessing
-├── Blenderbot_small-90M/    # BlenderBot-small weights (gitignored, wget once)
+├── Blenderbot_small-90M/    # BlenderBot-small (vocab/merges/config tracked; pytorch_model.bin gitignored, wget once)
 ├── metric/                  # evaluation metrics (BLEU, ROUGE, embedding-based, ...)
-├── sasrec/                  # SASRec strategy router (shared by ensembles)
+├── sasrec/                  # SASRec strategy router code (shared by ensembles)
+├── data/sasrec/             # Trained SASRec checkpoint + valid/test probs (shared by ensembles)
+├── apex/                    # NVIDIA Apex (mixed-precision, vendored — shared)
 ├── BlenderBot/              # BlenderBot + S3-ESC
-├── KEMI/  PMPC/  DKFPE/  GLHG/  MISC/   # placeholders for upcoming baselines
+├── PMPC/                    # PMPC + S3-ESC
+├── DKFPE/                   # DKFPE + S3-ESC
+├── KEMI/  GLHG/  MISC/      # placeholders for upcoming baselines
 └── README.md                # (this file)
 ```
