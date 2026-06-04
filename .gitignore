@@ -10,6 +10,5 @@ Blenderbot_small-90M/pytorch_model.bin
 DialoGPT-small/
 
 logs/
-# METEOR paraphrase data (not used in main-table metrics; download from
-# the pycocoevalcap/meteor source if you need METEOR scores)
+# METEOR paraphrase data (not used in main-table metrics)
 metric/pycocoevalcap/meteor/data/paraphrase-en.gz

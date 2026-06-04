@@ -9,7 +9,7 @@ S3-ESC method applied on the MISC baseline (MIxed Strategy-aware model with COMM
 ## Environment
 
 ```bash
-conda env create -f env.yml
+conda env create -f ../env-esc2021.yml
 conda activate esc-2021
 ```
 
@@ -65,7 +65,6 @@ MISC/
 ├── prepare_misc_cl_data.py / generate_misc_cl_comet.py   # data prep
 ├── generate_s3_ensemble.py / cal_metric.py / compute_*.py   # inference & metrics
 ├── lora_expert_layers.py / scheduled_sampling.py
-└── env.yml                  # Conda environment (esc-2021)
 ```
 
 Shared assets at the repo root are accessed via `../`: `../_reformat/`, `../Blenderbot_small-90M/`, `../data/sasrec/`.

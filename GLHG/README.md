@@ -7,7 +7,7 @@ S3-ESC method applied on the GLHG baseline (Global-to-Local Hierarchical Graph n
 ## Environment
 
 ```bash
-conda env create -f env.yml
+conda env create -f ../env-esc2021.yml
 conda activate esc-2021
 ```
 
@@ -56,7 +56,6 @@ GLHG/
 ├── ensemble/                # GLHG + SASREC ensemble grid search
 ├── sasrec/                  # GLHG-specific SASRec implementation
 ├── utils/                   # Training utilities
-├── env.yml                  # Conda environment (esc-2021)
 └── train_s3.py / infer_s3.py / infer_ensemble_s3.py / prepare.py / ...   # entrypoints
 ```
 

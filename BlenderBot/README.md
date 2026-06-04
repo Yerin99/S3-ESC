@@ -7,7 +7,7 @@ S3-ESC method applied on the BlenderBot-small baseline.
 ## Environment
 
 ```bash
-conda env create -f env.yml
+conda env create -f ../env-esc2021.yml
 conda activate esc-2021
 ```
 
@@ -56,7 +56,6 @@ BlenderBot/
 ├── hidden_strategy_probe/   # Strategy prediction probe
 ├── ensemble/                # BlenderBot + SASREC ensemble
 ├── apex/                    # NVIDIA Apex (mixed precision)
-├── env.yml                  # Conda environment for BlenderBot + S3-ESC
 └── train.py / prepare.py / infer.py / ...   # entrypoints
 ```
 

@@ -7,7 +7,7 @@ S3-ESC method applied on the DKFPE baseline (Dynamic Knowledge Filtering and Per
 ## Environment
 
 ```bash
-conda env create -f env.yml
+conda env create -f ../env-cuda.yml
 conda activate cuda
 ```
 
@@ -83,7 +83,6 @@ DKFPE/
 ├── _reformat/process_dkfpe.py  # DKFPE-specific data preprocessing
 ├── utils/                   # Training utilities
 ├── apex/                    # NVIDIA Apex (mixed precision)
-├── env.yml                  # Conda environment for DKFPE + S3-ESC
 └── train.py / prepare.py / infer.py / train_filter.py / ...   # entrypoints
 ```
 

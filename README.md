@@ -2,7 +2,7 @@
 
 Code for the paper submitted to ARR.
 
-This codebase builds on the [ESConv](https://github.com/thu-coai/Emotional-Support-Conversation) framework (Liu et al., ACL 2021). Each baseline + S3-ESC combination lives in its own top-level folder and ships its own conda env; shared assets (`_reformat/`, `Blenderbot_small-90M/`, `metric/`, `sasrec/`) sit at the repo root.
+This codebase builds on the [ESConv](https://github.com/thu-coai/Emotional-Support-Conversation) framework (Liu et al., ACL 2021). Each baseline + S3-ESC combination lives in its own top-level folder; shared assets (`_reformat/`, `Blenderbot_small-90M/`, `metric/`, `sasrec/`, `apex/`) and the two conda environments (`env-esc2021.yml`, `env-cuda.yml`) sit at the repo root. Each baseline README states which environment it uses.
 
 ## Baselines
 
@@ -46,6 +46,8 @@ ARR/
 ├── sasrec/                  # SASRec strategy router code (shared by ensembles)
 ├── data/sasrec/             # Trained SASRec checkpoint + valid/test probs (shared by ensembles)
 ├── apex/                    # NVIDIA Apex (mixed-precision, vendored — shared)
+├── env-esc2021.yml          # conda env for BlenderBot / KEMI / GLHG / MISC
+├── env-cuda.yml             # conda env for PMPC / DKFPE
 ├── BlenderBot/              # BlenderBot + S3-ESC
 ├── PMPC/                    # PMPC + S3-ESC
 ├── DKFPE/                   # DKFPE + S3-ESC

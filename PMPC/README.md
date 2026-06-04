@@ -7,7 +7,7 @@ S3-ESC method applied on the PMPC baseline (BlenderBot-small variant; DialoGPT v
 ## Environment
 
 ```bash
-conda env create -f env.yml
+conda env create -f ../env-cuda.yml
 conda activate cuda
 ```
 
@@ -79,7 +79,6 @@ PMPC/
 ├── sasrec/                  # PMPC-specific SASRec implementation
 ├── utils/                   # Training utilities
 ├── apex/                    # NVIDIA Apex (mixed precision)
-├── env.yml                  # Conda environment for PMPC + S3-ESC
 └── train.py / prepare.py / infer.py / ...   # entrypoints
 ```
 

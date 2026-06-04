@@ -396,7 +396,7 @@ for infer_idx, infer_input_file in enumerate(args.infer_input_file):
             hyp_list.append(hyp)
         
         from metric import NLGEval
-        metric = NLGEval()
+        metric = NLGEval(metrics_to_omit=['METEOR'])
         metric_res, metric_res_list = metric.compute_metrics([ref_list], hyp_list)
         with open(os.path.join(save_dir, f'metric_nlgeval.json'), 'w') as f:
             json.dump(metric_res, f, ensure_ascii=False, indent=2, sort_keys=True)
