@@ -41,3 +41,6 @@ Thumbs.db
 
 # Environment
 .env
+
+# Shared meteor data (copy from ../metric/pycocoevalcap/meteor/data/ if running METEOR)
+metric/pycocoevalcap/meteor/data/paraphrase-en.gz
