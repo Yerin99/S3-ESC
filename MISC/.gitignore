@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+
+# Pre-trained models & large files
+external_models/
+Blenderbot_small-90M/
+blenderbot_small-90M/
+blender-small/
+
+# Cached / processed data
+DATA
+dataset/
+generated_data/
+cached/
+
+# Training outputs & checkpoints
+blender_strategy/
+SAVE/
+save/
+checkpoint*/
+*.ckpt
+
+# Logs
+*.log
+*.out
+logs/
+runs/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
