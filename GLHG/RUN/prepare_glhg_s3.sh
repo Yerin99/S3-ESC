@@ -1,5 +1,5 @@
 python prepare.py \
-    --config_name glhg_s3_seq \
+    --config_name glhg_s3 \
     --inputter_name glhg_s3 \
     --train_input_file ../_reformat/train.txt \
     --max_input_length 128 \

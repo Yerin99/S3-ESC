@@ -3,7 +3,7 @@
 # DKFPE + s3: 2-stage probe training (017 method)
 # Loads best backbone checkpoint, extracts hidden states, trains probe for 100 epochs
 # Runs both encoder and decoder probe sources sequentially
-# Usage: PROBE_FROM=./DATA/dkfpe.dkfpe_s3_seq/<timestamp>... bash RUN/train_dkfpe_s3_seq_probe.sh
+# Usage: PROBE_FROM=./DATA/dkfpe.dkfpe_s3/<timestamp>... bash RUN/train_dkfpe_s3_probe.sh
 
 PROBE_FROM=${PROBE_FROM:?"Set PROBE_FROM to the training output directory"}
 
@@ -13,7 +13,7 @@ for PROBE_SOURCE in enc dec; do
     echo "========================================"
 
     CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python train.py \
-        --config_name "dkfpe_s3_seq_${PROBE_SOURCE}" \
+        --config_name "dkfpe_s3_${PROBE_SOURCE}" \
         --inputter_name dkfpe \
         --seed 42 \
         --max_input_length 512 \

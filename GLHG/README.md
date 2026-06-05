@@ -25,25 +25,37 @@ bash RUN/prepare_glhg_s3.sh
 
 ## Training
 
-GLHG + S3-ESC backbone (LoRA + encoder probe + scheduled sampling):
+GLHG + S3-ESC main model — full pipeline: backbone training (LoRA + probe + scheduled sampling) → probe extraction (enc/dec) → grid search → SASRec ensemble. The SASRec ensemble is the **required final step** of the method.
 
 ```bash
-bash RUN/train_glhg_s3.sh
+bash RUN/pipeline_glhg_s3.sh            # optional: bash RUN/pipeline_glhg_s3.sh <GPU_ID>
 ```
 
-The probe can be extracted from the encoder (`enc`) or decoder (`dec`) source via the `glhg_s3_seq_enc` / `glhg_s3_seq_dec` configs (probe-only training with `--probe_only_from`). See `train_s3.py` for the probe-extra-training flags.
+The probe is extracted from the encoder (`enc`) or decoder (`dec`) source via the `glhg_s3_enc` / `glhg_s3_dec` configs; the pipeline runs both and grid-searches the ensemble weight on validation. For backbone-only training, use `bash RUN/train_glhg_s3.sh`.
 
 ## Inference
 
+The full method's inference (probe + SASRec ensemble) runs as the final stage of `pipeline_glhg_s3.sh`. To run the stages standalone on a trained checkpoint:
+
 ```bash
-# Probe-only (PROBE_SRC = enc | dec)
+# probe-only (PROBE_SRC = enc | dec)
 CHECKPOINT=DATA/{...}/epoch-{n}_probe_enc.bin PROBE_SRC=enc bash RUN/infer_glhg_s3.sh
 
-# Probe + SASRec ensemble (SASREC_PROBS defaults to ../data/sasrec/test_probs.json)
+# probe + SASRec ensemble (SASREC_PROBS defaults to ../data/sasrec/test_probs.json)
 CHECKPOINT=... PROBE_SRC=enc ENSEMBLE_ALPHA=0.5 bash RUN/infer_ensemble_glhg_s3.sh
 ```
 
 Main-table metrics (PPL, BLEU, ROUGE-L, Distinct, F1, Strategy-Acc) are computed from the shared `../metric` package.
+
+## Reported Hyperparameters
+
+Settings that reproduce this baseline's `+S3` row in the paper's main table:
+
+| ss_p | LoRA lr | probe | ensemble α |
+|------|---------|-------|-----------|
+| 0.1 | 3e-5 | enc | 0.50 |
+
+`ss_p` = scheduled-sampling probability; `LoRA lr` = learning rate of the LoRA expert params; `probe` = strategy-probe source (`enc` = encoder mean-pool); `α` = ensemble weight grid-searched on validation (`p_final = α·p_probe + (1−α)·p_sasrec`). The backbone learning rate follows the original GLHG setup and is left unchanged. These are the defaults in `RUN/pipeline_glhg_s3.sh`.
 
 ## Folder Layout
 
@@ -60,3 +72,17 @@ GLHG/
 ```
 
 Shared assets at the repo root are accessed via `../`: `../_reformat/`, `../Blenderbot_small-90M/`, `../metric/`, `../data/sasrec/`, `../apex/`.
+
+## Citation
+
+Original paper:
+
+```bibtex
+@inproceedings{peng2022glhg,
+    title = {Control Globally, Understand Locally: A Global-to-Local Hierarchical Graph Network for Emotional Support Conversation},
+    author = {Peng, Wei and Hu, Yue and Xing, Luxi and Xie, Yuqiang and Sun, Yajing and Li, Yunpeng},
+    booktitle = {Proceedings of the Thirty-First International Joint Conference on Artificial Intelligence ({IJCAI})},
+    pages = {4324--4330},
+    year = {2022},
+}
+```

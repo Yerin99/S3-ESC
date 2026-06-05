@@ -6,7 +6,7 @@ GPU=${1:-3}
 CKPT=${2:?"Usage: bash RUN/infer_s3.sh GPU_ID CHECKPOINT_PATH"}
 
 CUDA_VISIBLE_DEVICES=$GPU python infer_s3.py \
-    --config_name kemi_s3_seq \
+    --config_name kemi_s3 \
     --inputter_name strat_s3 \
     --data_name esconv \
     --knowledge_name sbert \

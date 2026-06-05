@@ -10,7 +10,7 @@ CHECKPOINT=${CHECKPOINT:?"Set CHECKPOINT to a trained checkpoint path (with prob
 # --- Step 1: Probe inference on valid set ---
 echo "=== Step 1: Probe inference on valid set ==="
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer.py \
-    --config_name dkfpe_s3_seq \
+    --config_name dkfpe_s3 \
     --inputter_name dkfpe \
     --seed 42 \
     --load_checkpoint "${CHECKPOINT}" \
@@ -38,7 +38,7 @@ echo ""
 # SASREC_PROBS: path to SASREC valid probabilities (from sasrec_eval.py)
 PROBE_GEN_JSON=${PROBE_GEN_JSON:-""}
 SASREC_PROBS=${SASREC_PROBS:-""}
-OUTPUT_FILE=${OUTPUT_FILE:-"./DATA/ensemble_s3/grid_search_dkfpe_s3_seq.json"}
+OUTPUT_FILE=${OUTPUT_FILE:-"./DATA/ensemble_s3/grid_search_dkfpe_s3.json"}
 
 if [ -n "${PROBE_GEN_JSON}" ] && [ -n "${SASREC_PROBS}" ]; then
     echo "=== Step 2: Grid search ==="
@@ -63,7 +63,7 @@ SASREC_TEST_PROBS=${SASREC_TEST_PROBS:-""}
 if [ -n "${SASREC_TEST_PROBS}" ]; then
     echo "=== Step 3: Ensemble inference on test set ==="
     CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer_ensemble_s3.py \
-        --config_name dkfpe_s3_seq \
+        --config_name dkfpe_s3 \
         --inputter_name dkfpe \
         --seed 42 \
         --load_checkpoint "${CHECKPOINT}" \

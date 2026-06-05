@@ -6,7 +6,7 @@
 eval "$(conda shell.bash hook 2>/dev/null)" && conda activate cuda
 
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python train.py \
-    --config_name dkfpe_s3_seq \
+    --config_name dkfpe_s3 \
     --inputter_name dkfpe \
     --seed 42 \
     --max_input_length 512 \

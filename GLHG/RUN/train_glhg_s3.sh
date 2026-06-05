@@ -1,7 +1,7 @@
 #!/bin/bash
 # GLHG + S3-ESC backbone training (LoRA + encoder probe + scheduled sampling)
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python train_s3.py \
-    --config_name glhg_s3_seq \
+    --config_name glhg_s3 \
     --inputter_name glhg_s3 \
     --eval_input_file ../_reformat/valid.txt \
     --seed 42 \

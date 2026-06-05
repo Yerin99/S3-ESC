@@ -5,7 +5,7 @@
 GPU=${1:-3}
 
 CUDA_VISIBLE_DEVICES=$GPU python train_s3.py \
-    --config_name kemi_s3_seq \
+    --config_name kemi_s3 \
     --inputter_name strat_s3 \
     --data_name esconv \
     --knowledge_name sbert \

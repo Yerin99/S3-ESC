@@ -3,7 +3,7 @@ SASREC_PROBS=${SASREC_PROBS:-../data/sasrec/test_probs.json}
 ENSEMBLE_ALPHA=${ENSEMBLE_ALPHA:-0.5}
 
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer_ensemble_s3.py \
-    --config_name strat_lora_blenderbot_s3_sr \
+    --config_name strat_lora_blenderbot_s3 \
     --inputter_name strat_lora \
     --seed 0 \
     --load_checkpoint "${CHECKPOINT}" \

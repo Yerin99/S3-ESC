@@ -2,18 +2,17 @@
 set -eo pipefail
 
 # =============================================================================
-# DKFPE s3 Condition B: Strategy Only via LoRA Routing
-# p_sample sweep × (prepare → backbone → probe enc/dec → inference → ensemble)
+# DKFPE + S3-ESC main pipeline (Strategy Only via LoRA Routing + SASRec ensemble)
+# Full pipeline: prepare → backbone → probe enc/dec → inference → grid search → ensemble
 #
-# Difference from pipeline_dkfpe_s3_seq.sh (A condition):
-# - --no_strat_in_seq flag: strategy tokens removed from encoder context & decoder labels
-# - --config_name dkfpe_s3_sr (and _b_enc, _b_dec variants)
-# - Separate data dir: ./DATA/dkfpe.dkfpe_s3_sr/
-# - Includes prepare step (B condition needs its own data.pkl)
+# - --no_strat_in_seq: strategy tokens removed from encoder context & decoder labels
+# - --config_name dkfpe_s3 (probe variants dkfpe_s3_enc, dkfpe_s3_dec)
+# - Data dir: ./DATA/dkfpe.dkfpe_s3/
+# - SASRec ensemble is the required final step
 #
 # Usage:
-#   bash RUN/pipeline_dkfpe_s3_sr.sh
-#   LORA_LR=5e-5 bash RUN/pipeline_dkfpe_s3_sr.sh
+#   bash RUN/pipeline_dkfpe_s3.sh
+#   LORA_LR=5e-5 bash RUN/pipeline_dkfpe_s3.sh
 # =============================================================================
 
 eval "$(conda shell.bash hook 2>/dev/null)" && conda activate cuda
@@ -21,7 +20,9 @@ eval "$(conda shell.bash hook 2>/dev/null)" && conda activate cuda
 export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0}
 
 # --- Configuration ---
-P_SAMPLES=(0.0 0.05 0.1 0.15 0.2)
+# Reported setting: ss_p_sample=0.1 (best, test PPL 16.54). For the full sweep,
+# run: P_SAMPLES="0.0 0.05 0.1 0.15 0.2" bash RUN/pipeline_dkfpe_s3.sh
+P_SAMPLES=(${P_SAMPLES:-0.1})
 TRAIN_FILE=../_reformat/701515/train.txt
 VALID_FILE=../_reformat/701515/valid.txt
 TEST_FILE=../_reformat/701515/test.txt
@@ -120,10 +121,10 @@ echo "================================================================"
 echo "  Step 0b: Prepare B condition data.pkl (--no_strat_in_seq)"
 echo "================================================================"
 
-DATA_DIR="./DATA/dkfpe.dkfpe_s3_sr"
+DATA_DIR="./DATA/dkfpe.dkfpe_s3"
 if [ ! -f "${DATA_DIR}/data.pkl" ]; then
     python prepare.py \
-        --config_name dkfpe_s3_sr \
+        --config_name dkfpe_s3 \
         --inputter_name dkfpe \
         --train_input_file "${TRAIN_FILE}" \
         --max_input_length 512 \
@@ -135,9 +136,9 @@ else
     echo "B condition data.pkl already exists at ${DATA_DIR}, skipping"
 fi
 
-# Probe configs (dkfpe_s3_sr_enc, dkfpe_s3_sr_dec) share the same data.pkl
+# Probe configs (dkfpe_s3_enc, dkfpe_s3_dec) share the same data.pkl
 for SUFFIX in enc dec; do
-    LINK_DIR="./DATA/dkfpe.dkfpe_s3_sr_${SUFFIX}"
+    LINK_DIR="./DATA/dkfpe.dkfpe_s3_${SUFFIX}"
     if [ ! -d "${LINK_DIR}" ]; then
         ln -s "$(realpath "${DATA_DIR}")" "${LINK_DIR}"
         echo "Symlinked ${LINK_DIR} → ${DATA_DIR}"
@@ -165,7 +166,7 @@ for P in "${P_SAMPLES[@]}"; do
     else
         echo "--- Step 1: Backbone training (p_sample=${P}, B condition) ---"
         python train.py \
-            --config_name dkfpe_s3_sr \
+            --config_name dkfpe_s3 \
             --inputter_name dkfpe \
             --seed 42 \
             --max_input_length 512 \
@@ -188,7 +189,7 @@ for P in "${P_SAMPLES[@]}"; do
             --probe_lr 1e-3 \
             --no_strat_in_seq
 
-        BACKBONE_DIR=$(find_latest_dir "./DATA/dkfpe.dkfpe_s3_sr")
+        BACKBONE_DIR=$(find_latest_dir "./DATA/dkfpe.dkfpe_s3")
     fi
 
     echo "Backbone dir: ${BACKBONE_DIR}"
@@ -203,7 +204,7 @@ for P in "${P_SAMPLES[@]}"; do
     for PROBE_SOURCE in enc dec; do
         echo "  Probe source: ${PROBE_SOURCE}"
         python train.py \
-            --config_name "dkfpe_s3_sr_${PROBE_SOURCE}" \
+            --config_name "dkfpe_s3_${PROBE_SOURCE}" \
             --inputter_name dkfpe \
             --seed 42 \
             --max_input_length 512 \
@@ -237,7 +238,7 @@ for P in "${P_SAMPLES[@]}"; do
 
         # 3a: Probe inference on valid set
         python infer.py \
-            --config_name "dkfpe_s3_sr_${PROBE_SOURCE}" \
+            --config_name "dkfpe_s3_${PROBE_SOURCE}" \
             --inputter_name dkfpe \
             --seed 42 \
             --load_checkpoint "${PROBE_CKPT}" \
@@ -280,7 +281,7 @@ print(data['best']['alpha'])
         # 3c: Ensemble inference on test set
         echo "--- Step 3c: Ensemble inference on test (source=${PROBE_SOURCE}, alpha=${BEST_ALPHA}) ---"
         python infer_ensemble_s3.py \
-            --config_name "dkfpe_s3_sr_${PROBE_SOURCE}" \
+            --config_name "dkfpe_s3_${PROBE_SOURCE}" \
             --inputter_name dkfpe \
             --seed 42 \
             --load_checkpoint "${PROBE_CKPT}" \
@@ -304,7 +305,7 @@ print(data['best']['alpha'])
         PROBE_CKPT="${BACKBONE_DIR}/epoch-${BEST_EPOCH}_probe_${PROBE_SOURCE}.bin"
         echo "--- Step 5: Probe-only inference on test (source=${PROBE_SOURCE}) ---"
         python infer.py \
-            --config_name "dkfpe_s3_sr_${PROBE_SOURCE}" \
+            --config_name "dkfpe_s3_${PROBE_SOURCE}" \
             --inputter_name dkfpe \
             --seed 42 \
             --load_checkpoint "${PROBE_CKPT}" \

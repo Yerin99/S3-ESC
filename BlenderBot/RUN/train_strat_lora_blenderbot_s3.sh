@@ -1,6 +1,6 @@
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python train.py \
-    --config_name strat_lora_blenderbot_s3_seq \
-    --inputter_name strat_lora_seq \
+    --config_name strat_lora_blenderbot_s3 \
+    --inputter_name strat_lora \
     --eval_input_file ../_reformat/valid.txt \
     --seed 13 \
     --max_input_length 160 \

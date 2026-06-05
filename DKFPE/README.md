@@ -43,16 +43,10 @@ python process_dkfpe.py --mode 701515   # 70:15:15 split — used by all baselin
 
 ## Training
 
-Main S3 model (full pipeline including backbone training, probe extraction, grid search, ensemble):
+Main S3 model — full pipeline: backbone training → probe extraction (enc/dec) → grid search → SASRec ensemble. The SASRec ensemble is the **required final step** of the method.
 
 ```bash
-bash RUN/pipeline_dkfpe_s3_seq.sh
-```
-
-For the no-strategy-sequence ablation (S3 single-round):
-
-```bash
-bash RUN/pipeline_dkfpe_s3_sr.sh
+bash RUN/pipeline_dkfpe_s3.sh
 ```
 
 DeBERTa knowledge filter training (standalone):
@@ -69,6 +63,16 @@ bash RUN/train_filter.sh
 CHECKPOINT=DATA/{inputter}.{config}/{timestamp}/epoch-{n}.bin \
   bash RUN/infer_dkfpe_s3.sh
 ```
+
+## Reported Hyperparameters
+
+Settings that reproduce this baseline's `+S3` row in the paper's main table:
+
+| ss_p | LoRA lr | probe | ensemble α |
+|------|---------|-------|-----------|
+| 0.1 | 5e-5 | enc | 0.80 |
+
+`ss_p` = scheduled-sampling probability; `LoRA lr` = learning rate of the LoRA expert params; `probe` = strategy-probe source (`enc` = encoder mean-pool); `α` = ensemble weight grid-searched on validation (`p_final = α·p_probe + (1−α)·p_sasrec`). The backbone learning rate follows the original DKFPE setup and is left unchanged. These are the defaults in `RUN/pipeline_dkfpe_s3.sh`.
 
 ## Folder Layout
 
@@ -87,3 +91,18 @@ DKFPE/
 ```
 
 Shared assets at the repo root are accessed via `../`: `../_reformat/`, `../Blenderbot_small-90M/`, `../metric/`.
+
+## Citation
+
+Original paper:
+
+```bibtex
+@inproceedings{hao2025dkfpe,
+    title = {Enhancing Emotional Support Conversations: A Framework for Dynamic Knowledge Filtering and Persona Extraction},
+    author = {Hao, Jiawang and Kong, Fang},
+    booktitle = {Proceedings of the 31st International Conference on Computational Linguistics},
+    pages = {3193--3202},
+    year = {2025},
+    publisher = {Association for Computational Linguistics},
+}
+```

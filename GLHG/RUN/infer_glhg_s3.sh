@@ -6,7 +6,7 @@ CHECKPOINT=${CHECKPOINT:?"Set CHECKPOINT to a trained probe checkpoint path"}
 PROBE_SRC=${PROBE_SRC:-enc}
 
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer_s3.py \
-    --config_name glhg_s3_seq_${PROBE_SRC} \
+    --config_name glhg_s3_${PROBE_SRC} \
     --inputter_name glhg_s3 \
     --load_checkpoint "${CHECKPOINT}" \
     --seed 0 \

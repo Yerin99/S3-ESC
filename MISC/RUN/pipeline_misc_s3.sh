@@ -20,7 +20,9 @@ set -eo pipefail
 export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0}
 
 # --- Configuration ---
-P_SAMPLES=(0.0 0.05 0.1 0.15 0.2)
+# Reported setting: ss_p_sample=0.2 (best). To reproduce the full sweep,
+# set P_SAMPLES=(0.0 0.05 0.1 0.15 0.2).
+P_SAMPLES=(${P_SAMPLES:-0.2})
 
 SASREC_SRC_DIR=${SASREC_SRC_DIR:-../data/sasrec}
 SASREC_MODEL=./DATA/sasrec/best_model.pt

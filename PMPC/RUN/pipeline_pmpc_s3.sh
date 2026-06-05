@@ -13,8 +13,8 @@ set -eo pipefail
 # - PMPC inference: k=30, p=0.9, t=0.7, rp=1.03
 #
 # Usage:
-#   bash RUN/pipeline_pmpc_s3_sr.sh
-#   LORA_LR=5e-5 bash RUN/pipeline_pmpc_s3_sr.sh
+#   bash RUN/pipeline_pmpc_s3.sh
+#   LORA_LR=5e-5 bash RUN/pipeline_pmpc_s3.sh
 # =============================================================================
 
 eval "$(conda shell.bash hook 2>/dev/null)" && conda activate cuda
@@ -22,7 +22,9 @@ eval "$(conda shell.bash hook 2>/dev/null)" && conda activate cuda
 export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0}
 
 # --- Configuration ---
-P_SAMPLES=(0.0 0.05 0.1 0.15 0.2)
+# Reported best: ss_p=0.1, lora_lr=5e-5, ensemble alpha~0.55 (grid-searched on valid).
+# Full sweep: P_SAMPLES="0.0 0.05 0.1 0.15 0.2" bash RUN/pipeline_pmpc_s3.sh
+P_SAMPLES=(${P_SAMPLES:-0.1})
 TRAIN_FILE=../_reformat/train.txt
 VALID_FILE=../_reformat/valid.txt
 TEST_FILE=../_reformat/test.txt
@@ -131,10 +133,10 @@ echo "================================================================"
 echo "  Step 0b: Prepare B condition data.pkl (--no_strat_in_seq)"
 echo "================================================================"
 
-DATA_DIR="./DATA/pmpc.pmpc_s3_sr"
+DATA_DIR="./DATA/pmpc.pmpc_s3"
 if [ ! -f "${DATA_DIR}/data.pkl" ]; then
     python prepare.py \
-        --config_name pmpc_s3_sr \
+        --config_name pmpc_s3 \
         --inputter_name pmpc \
         --train_input_file "${TRAIN_FILE}" \
         --max_input_length 160 \
@@ -167,7 +169,7 @@ for P in "${P_SAMPLES[@]}"; do
     else
         echo "--- Step 1: Backbone training (p_sample=${P}, B condition) ---"
         python train.py \
-            --config_name pmpc_s3_sr \
+            --config_name pmpc_s3 \
             --inputter_name pmpc \
             --seed 42 \
             --max_input_length 160 \
@@ -189,7 +191,7 @@ for P in "${P_SAMPLES[@]}"; do
             --ss_p_random 0.0 \
             --no_strat_in_seq
 
-        BACKBONE_DIR=$(find_latest_dir "./DATA/pmpc.pmpc_s3_sr")
+        BACKBONE_DIR=$(find_latest_dir "./DATA/pmpc.pmpc_s3")
     fi
 
     echo "Backbone dir: ${BACKBONE_DIR}"
@@ -206,7 +208,7 @@ for P in "${P_SAMPLES[@]}"; do
     # -----------------------------------------------------------------
     echo "--- Step 3a: strategy_predictor inference on valid ---"
     python infer.py \
-        --config_name pmpc_s3_sr \
+        --config_name pmpc_s3 \
         --inputter_name pmpc \
         --seed 42 \
         --load_checkpoint "${BEST_CKPT}" \
@@ -257,7 +259,7 @@ print(data['best']['alpha'])
     # -----------------------------------------------------------------
     echo "--- Step 4: Ensemble inference on test (alpha=${BEST_ALPHA}) ---"
     python infer_ensemble_s3.py \
-        --config_name pmpc_s3_sr \
+        --config_name pmpc_s3 \
         --inputter_name pmpc \
         --seed 42 \
         --load_checkpoint "${BEST_CKPT}" \
@@ -276,7 +278,7 @@ print(data['best']['alpha'])
     # -----------------------------------------------------------------
     echo "--- Step 5: strategy_predictor-only inference on test ---"
     python infer.py \
-        --config_name pmpc_s3_sr \
+        --config_name pmpc_s3 \
         --inputter_name pmpc \
         --seed 42 \
         --load_checkpoint "${BEST_CKPT}" \

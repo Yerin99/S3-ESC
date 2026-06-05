@@ -52,6 +52,16 @@ python compute_ensemble_ppl.py
 
 Main-table metrics (PPL, BLEU, ROUGE-L, Distinct, F1, Strategy-Acc) come from MISC's bundled `metric/` package.
 
+## Reported Hyperparameters
+
+Settings that reproduce this baseline's `+S3` row in the paper's main table:
+
+| ss_p | LoRA lr | probe | ensemble α |
+|------|---------|-------|-----------|
+| 0.2 | 5e-5 | predictor (single) | 0.30 |
+
+`ss_p` = scheduled-sampling probability; `LoRA lr` = learning rate of the LoRA expert params; `α` = ensemble weight grid-searched on validation (`p_final = α·p_strat + (1−α)·p_sasrec`). MISC reuses its built-in `strategy_head` predictor (no separate enc/dec probe variant), so `probe` is a single predictor. The backbone learning rate follows the original MISC setup and is left unchanged.
+
 ## Folder Layout
 
 ```
@@ -68,3 +78,18 @@ MISC/
 ```
 
 Shared assets at the repo root are accessed via `../`: `../_reformat/`, `../Blenderbot_small-90M/`, `../data/sasrec/`.
+
+## Citation
+
+Original paper:
+
+```bibtex
+@inproceedings{tu2022misc,
+    title = {{MISC}: A Mixed Strategy-Aware Model Integrating {COMET} for Emotional Support Conversation},
+    author = {Tu, Quan and Li, Yanran and Cui, Jianwei and Wang, Bin and Wen, Ji-Rong and Yan, Rui},
+    booktitle = {Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+    pages = {308--319},
+    year = {2022},
+    publisher = {Association for Computational Linguistics},
+}
+```

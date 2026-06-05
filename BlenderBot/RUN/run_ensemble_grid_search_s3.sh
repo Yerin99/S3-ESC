@@ -2,7 +2,7 @@
 CHECKPOINT=${CHECKPOINT:?"Set CHECKPOINT to a trained checkpoint path"}
 
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer.py \
-    --config_name strat_lora_blenderbot_s3_sr \
+    --config_name strat_lora_blenderbot_s3 \
     --inputter_name strat_lora \
     --seed 0 \
     --load_checkpoint "${CHECKPOINT}" \
@@ -25,7 +25,7 @@ CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer.py \
 # SASREC_PROBS: path to SASREC valid probabilities
 PROBE_GEN_JSON=${PROBE_GEN_JSON:?"Set PROBE_GEN_JSON to the valid gen.json path"}
 SASREC_PROBS=${SASREC_PROBS:-../data/sasrec/test_probs.json}
-OUTPUT_FILE=${OUTPUT_FILE:-"./DATA/ensemble_s3/grid_search_s3_sr.json"}
+OUTPUT_FILE=${OUTPUT_FILE:-"./DATA/ensemble_s3/grid_search_s3.json"}
 
 python -m ensemble.grid_search_s3 \
     --probe_probs_file "${PROBE_GEN_JSON}" \

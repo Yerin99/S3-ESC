@@ -39,33 +39,32 @@ bash RUN/prepare_pmpc.sh
 
 ## Training
 
-The PMPC + S3-ESC main model:
+The PMPC + S3-ESC main model — full pipeline: backbone training (no strategy in sequence) → probe extraction → grid search → SASRec ensemble. The SASRec ensemble is the **required final step** of the method.
 
 ```bash
-bash RUN/train_pmpc.sh
+bash RUN/pipeline_pmpc_s3.sh
 ```
 
-For the no-strategy-sequence ablation pipeline (PMPC + S3-ESC, single round):
-
-```bash
-bash RUN/pipeline_pmpc_s3_sr.sh
-```
-
-(Set `SASREC_SRC_DIR` and `CHECKPOINT` env vars where the scripts require them.)
+(Set `SASREC_SRC_DIR` and `CHECKPOINT` env vars where the scripts require them.) For backbone-only training, use `bash RUN/train_pmpc.sh`.
 
 ## Inference
 
-```bash
-CHECKPOINT=DATA/{inputter}.{config}/{timestamp}/epoch-{n}.bin \
-  bash RUN/infer_pmpc.sh
-```
-
-For SASREC-ensemble inference:
+The full method's inference (probe + SASRec ensemble) runs as the final stage of `pipeline_pmpc_s3.sh`. To run it standalone on a trained checkpoint:
 
 ```bash
 CHECKPOINT=... SASREC_PROBS=... ENSEMBLE_ALPHA=0.5 \
-  python infer_ensemble_s3.py --config_name pmpc_s3_sr --inputter_name pmpc ...
+  python infer_ensemble_s3.py --config_name pmpc_s3 --inputter_name pmpc ...
 ```
+
+## Reported Hyperparameters
+
+Settings that reproduce this baseline's `+S3` row in the paper's main table:
+
+| ss_p | LoRA lr | probe | ensemble α |
+|------|---------|-------|-----------|
+| 0.1 | 5e-5 | predictor (single) | 0.55 |
+
+`ss_p` = scheduled-sampling probability; `LoRA lr` = learning rate of the LoRA expert params; `α` = ensemble weight grid-searched on validation (`p_final = α·p_strat + (1−α)·p_sasrec`). PMPC reuses its built-in prompt-based strategy predictor (no separate enc/dec probe variant), so `probe` is a single predictor. The backbone learning rate follows the original PMPC setup and is left unchanged.
 
 ## Folder Layout
 
@@ -83,3 +82,21 @@ PMPC/
 ```
 
 Shared assets at the repo root are accessed via `../`: `../_reformat/`, `../Blenderbot_small-90M/`, `../metric/`.
+
+## Citation
+
+Original paper:
+
+```bibtex
+@article{xu2025pmpc,
+    title   = {Prompt Learning With Multiperspective Cues for Emotional Support Conversation Systems},
+    author  = {Xu, Yangyang and Zhao, Zhuoer and Sun, Xiao and Yang, Xun},
+    journal = {IEEE Transactions on Computational Social Systems},
+    volume  = {12},
+    number  = {5},
+    pages   = {2648--2660},
+    month   = oct,
+    year    = {2025},
+    publisher = {IEEE},
+}
+```

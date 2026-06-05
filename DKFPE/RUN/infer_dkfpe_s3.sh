@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # DKFPE + s3: Inference with joint probe (strat_id auto-dropped)
-# Usage: CHECKPOINT=./DATA/dkfpe.dkfpe_s3_seq/<timestamp>/epoch-X_probe.bin bash RUN/infer_dkfpe_s3_seq.sh
+# Usage: CHECKPOINT=./DATA/dkfpe.dkfpe_s3/<timestamp>/epoch-X_probe.bin bash RUN/infer_dkfpe_s3.sh
 
 CHECKPOINT=${CHECKPOINT:?"Set CHECKPOINT to a trained checkpoint path (with probe)"}
 
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer.py \
-    --config_name dkfpe_s3_seq \
+    --config_name dkfpe_s3 \
     --inputter_name dkfpe \
     --seed 42 \
     --load_checkpoint "${CHECKPOINT}" \

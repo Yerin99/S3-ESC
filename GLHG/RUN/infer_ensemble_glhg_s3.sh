@@ -6,7 +6,7 @@ SASREC_PROBS=${SASREC_PROBS:-../data/sasrec/test_probs.json}
 ENSEMBLE_ALPHA=${ENSEMBLE_ALPHA:-0.5}
 
 CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0} python infer_ensemble_s3.py \
-    --config_name glhg_s3_seq_${PROBE_SRC} \
+    --config_name glhg_s3_${PROBE_SRC} \
     --inputter_name glhg_s3 \
     --load_checkpoint "${CHECKPOINT}" \
     --sasrec_probs_file "${SASREC_PROBS}" \

@@ -238,8 +238,8 @@ for infer_idx, infer_input_file in enumerate(args.infer_input_file):
                     other_res['acc_map'] = batch_other_res['acc_map']
                 
                 for k, v in batch_other_res['acc_map'].items():
-                    if k not in batch_other_res or v not in encoded_info: # TODO
-                        continue # TODO
+                    if k not in batch_other_res or v not in encoded_info:
+                        continue
                     batch_other_res[k] = batch_other_res[k].tolist()
                     encoded_info[v] = encoded_info[v].tolist()
                     if f'{v}_top1' in encoded_info:
@@ -305,8 +305,8 @@ for infer_idx, infer_input_file in enumerate(args.infer_input_file):
             if batch_other_res is not None:
                 if add_acc:
                     for k, v in batch_other_res['acc_map'].items():
-                        if k not in batch_other_res or v not in encoded_info: # TODO
-                            continue # TODO
+                        if k not in batch_other_res or v not in encoded_info:
+                            continue
                         other_res_to_append[v] = encoded_info[v][idx]
                         if f'{v}_top1' in encoded_info:
                             other_res_to_append[f'{v}_top1'] = encoded_info[f'{v}_top1'][idx]
@@ -364,8 +364,8 @@ for infer_idx, infer_input_file in enumerate(args.infer_input_file):
     if not args.only_generate:
         if 'acc' in other_res:
             for k, v in other_res['acc_map'].items():
-                if k not in other_res['acc'] or v not in other_res['acc']: # TODO
-                    continue # TODO
+                if k not in other_res['acc'] or v not in other_res['acc']:
+                    continue
                 kk = np.array(other_res['acc'][k], dtype=int)
                 vv = np.array(other_res['acc'][v], dtype=int)
                 print(f'{k}: classification_report\n', classification_report(kk, vv))
