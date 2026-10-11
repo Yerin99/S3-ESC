@@ -1,8 +1,10 @@
-# S3-ESC: Strategy-Aware Emotional Support Conversation
+# S3-ESC
 
-Code for the paper submitted to ARR.
+**Enhancing Emotional Support Conversation with Plug-in Modules for Sequential Strategy Modeling and Strategy-Specialized Generation**
 
-Each baseline + S3-ESC combination lives in its own top-level folder; shared assets (`_reformat/`, `Blenderbot_small-90M/`, `metric/`, `sasrec/`, `apex/`) and the two conda environments (`env-esc2021.yml`, `env-cuda.yml`) sit at the repo root. Each baseline README states which environment it uses.
+Code for S3-ESC, accepted to EMNLP 2026 Findings. Paper link and BibTeX will be added once the proceedings are published.
+
+Each baseline + S3-ESC combination lives in its own top-level folder; shared assets (`_reformat/`, `Blenderbot_small-90M/`, `metric/`, `sasrec/`, `data/sasrec/`, `apex/`) and the two conda environments (`env-esc2021.yml`, `env-cuda.yml`) sit at the repo root. Each baseline README states which environment it uses.
 
 Each baseline is built on the original authors' publicly released code; missing or incomplete parts of the released code were reimplemented following the paper. All baselines are unified to a **70:15:15** train/valid/test split of ESConv for fair comparison. On top of each baseline we then apply our contribution (S3-ESC), whose main components are **Selective LoRA**, **Scheduled Sampling**, and a **Sequential strategy predictor** (SASRec ensemble).
 
@@ -56,7 +58,7 @@ cd _reformat && python process.py && cd ..
 ## Repo Layout
 
 ```
-ARR/
+S3-ESC/
 ├── _reformat/               # raw ESConv data + preprocessing
 ├── Blenderbot_small-90M/    # BlenderBot-small (vocab/merges/config tracked; pytorch_model.bin gitignored, wget once)
 ├── metric/                  # evaluation metrics (BLEU, ROUGE, embedding-based, ...)
@@ -66,9 +68,9 @@ ARR/
 ├── env-esc2021.yml          # conda env for BlenderBot / KEMI / GLHG / MISC
 ├── env-cuda.yml             # conda env for PMPC / DKFPE
 ├── BlenderBot/              # BlenderBot + S3-ESC
+├── KEMI/                    # KEMI + S3-ESC
 ├── PMPC/                    # PMPC + S3-ESC
 ├── DKFPE/                   # DKFPE + S3-ESC
-├── KEMI/                    # KEMI + S3-ESC
 ├── GLHG/                    # GLHG + S3-ESC
 ├── MISC/                    # MISC + S3-ESC
 └── README.md                # (this file)
